@@ -1,0 +1,40 @@
+admin:
+  username: "admin"
+  password: "password"
+
+indexer:
+  # 'type' can only be 'shell' or 'docker'. Using 'shell' means that PCR will use a shell
+  # version of conda to index the channels, using 'docker' will use a dockerized-conda instance
+  # to index the channels. Use 'shell' when running the server application in a dockerized
+  # container, like in docker-compose. This is because it is not easy to have a docker container
+  # run another docker container whilst setting up the volumes for the second docker container.
+  type: docker
+  # if using docker, the image name and mount folder options can be specified
+  image_name: citi_project/pcr-server
+  # This is the folder path on the host where the conda channels and packages are stored
+  # leave empty for the application to automatically set path based on OS
+  mount_folder: ""
+  # if True, the application will attempt to update the conda-build version on the shell or pull
+  # the latest indexer docker image on application startup
+  update: False
+
+db:
+  host: postgres
+  port: 5432
+  user: citi
+  password: citibank@1
+  dbname: citicondarepo_db
+  # if true, automatically migrates the database to the latest schema. Otherwise, migration has to
+  # be handled by the user manually
+  auto_migrate: True
+
+fileserver:
+  port: 5050
+
+api:
+  port: 5060
+
+# if valid key and cert files are provided, server runs in HTTPS mode automatically
+tls:
+  cert: "" # path to TLS certificate  (public key)
+  key: "" # path to TLS key (private key)
