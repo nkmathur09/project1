@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    ports: 
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: citi
+      POSTGRES_PASSWORD: citibank@1
+      POSTGRES_DB: citicondarepo_db
+    volumes:
+      - citicondarepo_db:/var/lib/postgresql/data
+  
+  server:
+    image: citi_project/pcr-server:latest
+    ports:
+      - "5050:5050"
+      - "5060:5060"
+    environment: 
+      PCR_INDEXER.TYPE: shell
+    volumes: 
+      - /Users/nik/Documents/Packages:/var/condapkg
+      - /Users/nik/Documents/Go/private-conda-repo-master/cli:/var/cli
+      # if overriding default config file
+     # - /Users/nik/Documents/Go/private-conda-repo-master/config.yaml:/var/private-conda-repo/config.yaml
+    depends_on: 
+      - postgres
+
+volumes:
+  pcrdb:
